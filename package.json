@@ -19,7 +19,9 @@
     "cli",
     "scaffold",
     "expo",
-    "nextjs"
+    "nextjs",
+    "web",
+    "mobile"
   ],
   "author": "Gilbert Munuo",
   "license": "MIT",

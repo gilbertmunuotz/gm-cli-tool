@@ -181,4 +181,4 @@ MIT License
 ## 👤 Author
 
 **Gilbert Munuo**
-🌐 https://www.gilbertmunuotz.com
+🌐 https://gilbertmunuotz.com
