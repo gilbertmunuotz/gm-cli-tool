@@ -1,28 +1,19 @@
 # create-gm-app
 
-🚀 A professional CLI tool to scaffold modern **Web** and **Mobile** applications with a clean, production-ready setup.
+![npm version](https://img.shields.io/npm/v/create-gm-app)
+![npm downloads](https://img.shields.io/npm/dm/create-gm-app)
+
+🚀 Scaffold modern **Web (Next.js)** and **Mobile (Expo)** apps with a clean, production-ready setup.
 
 ---
 
-## ✨ Features
-
-* ⚡ Fast project scaffolding using **npx**
-* 🌐 Web stack (Next.js + Tailwind + shadcn/ui)
-* 📱 Mobile stack (Expo + HeroUI + Uniwind)
-* 🧠 Smart interactive CLI (Inquirer-based)
-* 🧹 Clean project structure out of the box
-* 🔧 Minimal but scalable architecture
-* 🧩 Built for extensibility (future stacks)
-
----
-
-## 📦 Installation (No global install required)
+## ⚡ Quick Usage
 
 ```bash
 npx create-gm-app
 ```
 
-Or specify directly:
+Or:
 
 ```bash
 npx create-gm-app web my-app
@@ -31,46 +22,93 @@ npx create-gm-app mobile my-app
 
 ---
 
+## 🧱 Stacks
+
+### 🌐 Web
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+
+### 📱 Mobile
+
+- Expo
+- HeroUI Native
+- Uniwind
+- Reanimated + Gesture Handler
+
+---
+
+## ✨ Core Features
+
+- Interactive CLI (Inquirer)
+- Clean, scalable architecture
+- Production-ready setup
+
+---
+
+## 📚 Full Documentation
+
+For complete setup details, customization options, development workflow, and roadmap:
+
+👉 https://github.com/gilbertmunuotz/gm-cli-tool
+
+---
+
+# 📖 GitHub Documentation (Full)
+
+## ✨ Features
+
+- ⚡ Fast project scaffolding using **npx**
+- 🌐 Web stack (Next.js + Tailwind + shadcn/ui)
+- 📱 Mobile stack (Expo + HeroUI + Uniwind)
+- 🧠 Smart interactive CLI (Inquirer-based)
+- 🧹 Clean project structure out of the box
+- 🔧 Minimal but scalable architecture
+- 🧩 Built for extensibility (future stacks)
+
+---
+
 ## 🧱 Supported Stacks
 
 ### 🌐 Web Stack
 
-* Next.js (App Router)
-* TypeScript
-* Tailwind CSS
-* shadcn/ui
-* ESLint
-* React Compiler (enabled)
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- ESLint
+- React Compiler (enabled)
 
 #### Optional Customization
 
-* `src/` directory
-* Import alias (`@/*`)
-* AGENTS.md support
+- `src/` directory
+- Import alias (`@/*`)
+- AGENTS.md support
 
 ---
 
 ### 📱 Mobile Stack
 
-* Expo (latest)
-* TypeScript
-* HeroUI Native
-* Uniwind (Tailwind for React Native)
-* React Native Reanimated
-* Gesture Handler
+- Expo (latest)
+- TypeScript
+- HeroUI Native
+- Uniwind (Tailwind for React Native)
+- React Native Reanimated
+- Gesture Handler
 
 #### Includes
 
-* Clean folder structure:
+```
+app/
+components/
+lib/
+hooks/
+```
 
-  ```
-  app/
-  components/
-  lib/
-  hooks/
-  ```
-* Babel configured for Reanimated
-* Reset of default Expo boilerplate
+- Babel configured for Reanimated
+- Reset of default Expo boilerplate
 
 ---
 
@@ -81,14 +119,6 @@ npx create-gm-app mobile my-app
 ```bash
 npx create-gm-app
 ```
-
-You’ll be prompted to choose:
-
-* Project type (Web / Mobile)
-* Project name
-* Customization options
-
----
 
 ### Direct Mode
 
@@ -103,29 +133,22 @@ npx create-gm-app mobile my-app
 
 ```
 gm-stack/
-├── bin/                # CLI entry
+├── bin/
 ├── src/
-│   ├── cli/            # CLI logic
-│   ├── commands/       # Commands (create, etc.)
-│   ├── templates/      # Web & Mobile templates
-│   └── utils/          # Helpers (validation, etc.)
+│   ├── cli/
+│   ├── commands/
+│   ├── templates/
+│   └── utils/
 ```
 
 ---
 
 ## 🛠️ Development
 
-Clone the repo:
-
 ```bash
-git clone https://github.com/your-username/gm-stack.git
+git clone https://github.com/gilbertmunuotz/gm-stack.git
 cd gm-stack
 npm install
-```
-
-Run locally:
-
-```bash
 npm link
 npm run build
 npx create-gm-app
@@ -135,17 +158,17 @@ npx create-gm-app
 
 ## 📌 Roadmap
 
-* [ ] More templates (e.g., SaaS starter, dashboard)
-* [ ] Plugin system
-* [ ] Config file support (`gm.config.json`)
-* [ ] CI/CD presets
-* [ ] Database integrations (Prisma, Supabase)
+- [ ] More templates (SaaS, dashboards)
+- [ ] Plugin system
+- [ ] Config support (`gm.config.json`)
+- [ ] CI/CD presets
+- [ ] Database integrations (Prisma, Supabase)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome. Feel free to open issues or submit PRs.
+PRs and issues are welcome.
 
 ---
 
@@ -158,4 +181,4 @@ MIT License
 ## 👤 Author
 
 **Gilbert Munuo**
-Aspiring Software Developer | Builder of scalable developer tools
+🌐 https://www.gilbertmunuotz.com
