@@ -25,7 +25,7 @@ export async function createMobileApp(name: string) {
     const targetPath = path.join(projectPath, dir);
 
     if (await fs.pathExists(targetPath)) {
-      await fs.remove(targetPath); 
+      await fs.remove(targetPath);
     }
   }
 
@@ -67,24 +67,51 @@ export default function RootLayout() {
   );
   spinner.succeed("Dependencies installed");
 
-
-  // Step 4: Configure Babel for Reanimated
-  spinner.start("⚙️ Configuring Babel...");
+  // Step 4: Create global.css file and Import it in main component file(rootLayout.tsx)
+  spinner.start("⌛️ Creating global.css file...;")
   await fs.writeFile(
-    path.join(projectPath, "babel.config.js"),
+    path.join(projectPath, "global.css"),
     `
- module.exports = function(api) {
-   api.cache(true);
-   return {
-     presets: ['babel-preset-expo'],
-     plugins: ['react-native-reanimated/plugin'],
-   };
- };
- `
-  );
-  spinner.succeed("Babel configured");
+@import 'tailwindcss';
+@import 'uniwind';
+@import 'heroui-native/styles';
 
-  // Step 5: Ensure folder structure
+@source './node_modules/heroui-native/lib';
+    `
+  );
+  await fs.writeFile(
+    path.join(projectPath, "app", "_layout.tsx"),
+    `
+import '../global.css';
+import { Slot } from "expo-router";
+
+export default function RootLayout() {
+  return <Slot />;
+}
+`
+  );
+
+  // Step 5: Create metro.config.js file and add the following code
+  spinner.start("⚙️ creating metro.config.js...")
+  await fs.writeFile(
+    path.join(projectPath, "metro.config.js"),
+    `
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('expo/metro-config');
+const { withUniwindConfig } = require('uniwind/metro');
+
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname);
+
+module.exports = withUniwindConfig(config, {
+    cssEntryFile: './global.css',
+    dtsFile: './uniwind-types.d.ts'
+});
+  `
+  );
+  spinner.succeed("Metro config created");
+
+  // Step 6: Ensure folder structure
   spinner.start("📁 Creating folders...");
   const dirs = ["components", "lib", "hooks", "constants", "config", "library", "providers", "utils"];
   for (const dir of dirs) {
