@@ -1,6 +1,6 @@
 {
   "name": "create-gm-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Official CLI to scaffold GM Stack apps",
   "bin": {
     "create-gm-app": "./bin/create-gm-stack.js"
