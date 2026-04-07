@@ -1,13 +1,25 @@
 import { Command } from "commander";
 import { createApp } from "../commands/create.js";
 import inquirer from "inquirer";
+import { readFileSync } from "node:fs";
 
 const program = new Command();
+
+function getCliVersion(): string {
+  try {
+    const pkgUrl = new URL("../../package.json", import.meta.url);
+    const pkgRaw = readFileSync(pkgUrl, "utf8");
+    const pkg = JSON.parse(pkgRaw) as { version?: unknown };
+    return typeof pkg.version === "string" ? pkg.version : "0.0.0";
+  } catch {
+    return "0.0.0";
+  }
+}
 
 program
   .name("create-gm-app")
   .description("CLI to scaffold GM Stack apps")
-  .version("1.0.0")
+  .version(getCliVersion())
   .arguments("[type] [name]")
   .action(async (_type, _name) => {
     const answers = await inquirer.prompt([
