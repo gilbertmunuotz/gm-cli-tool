@@ -75,7 +75,12 @@ export async function createWebApp(name: string) {
   // Step 5: Setup shadcn
   spinner.start("Setting up shadcn...");
   try {
-    await execa("npx", ["shadcn@latest", "init"], {
+    await execa("npx", [
+      "shadcn@latest",
+      "init",
+      "-y",
+      "--defaults"
+    ], {
       cwd: projectPath,
       stdio: "inherit",
     });
