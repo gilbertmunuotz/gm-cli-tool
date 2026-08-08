@@ -78,8 +78,6 @@ export async function createWebApp(name: string) {
     await execa("npx", [
       "shadcn@latest",
       "init",
-      "-y",
-      "--defaults"
     ], {
       cwd: projectPath,
       stdio: "inherit",
