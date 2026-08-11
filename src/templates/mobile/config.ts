@@ -11,52 +11,27 @@ export async function createMobileApp(name: string) {
 
   // Step 1: Create Expo project
   spinner.start("🚀 Creating Expo app...");
+
   await execa("npx", ["create-expo-app@latest", name], {
     stdio: "inherit",
   });
+
   spinner.succeed("Expo app created");
 
-  // Step 2: Reset project directories
-  spinner.start("🧹 Resetting project structure...");
+  // Step 2: Reset Expo starter project
+  spinner.start("🧹 Resetting Expo project...");
 
-  const dirsToRemove = ["app", "components", "hooks", "constants", "scripts"];
+  await execa("npm", ["run", "reset-project"], {
+    cwd: projectPath,
+    stdio: "inherit",
+  });
 
-  for (const dir of dirsToRemove) {
-    const targetPath = path.join(projectPath, dir);
+  spinner.succeed("Expo project reset");
 
-    if (await fs.pathExists(targetPath)) {
-      await fs.remove(targetPath);
-    }
-  }
 
-  spinner.succeed("Project cleaned");
 
-  // Create new /app folder with index.tsx and _layout.tsx
-  const appDir = path.join(projectPath, "app");
-  await fs.ensureDir(appDir);
-  await fs.writeFile(
-    path.join(appDir, "index.tsx"),
-    `import { Text, View } from 'react-native';
 
-export default function RootLayout() {
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text>Hello, Expo + GM Stack!</Text>
-    </View>
-  );
-}
-`
-  );
-  await fs.writeFile(
-    path.join(appDir, "_layout.tsx"),
-    ` import { Stack } from "expo-router";
-
-export default function RootLayout() {
-  return <Stack />;
-}
-`
-  );
-  spinner.succeed("Project structure reset");
+  
 
   // Step 3: Install dependencies
   spinner.start("📦 Installing dependencies...");
