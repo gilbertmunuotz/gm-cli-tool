@@ -21,10 +21,54 @@ export async function createMobileApp(name: string) {
   // Step 2: Reset Expo starter project
   spinner.start("🧹 Resetting Expo project...");
 
-  await execa("npm", ["run", "reset-project"], {
-    cwd: projectPath,
-    stdio: "inherit",
-  });
+  const dirsToRemove = ["src", "scripts"];
+
+  for (const dir of dirsToRemove) {
+    const targetPath = path.join(projectPath, dir);
+
+    if (await fs.pathExists(targetPath)) {
+      await fs.remove(targetPath);
+    }
+  }
+
+  spinner.succeed("Project cleaned");
+
+  // Create Expo Router structure
+  const appDir = path.join(projectPath, "src", "app");
+
+  await fs.ensureDir(appDir);
+
+  await fs.writeFile(
+    path.join(appDir, "index.tsx"),
+    `import { Text, View, StyleSheet } from "react-native";
+
+export default function Index() {
+  return (
+    <View style={styles.container}>
+      <Text>Hello, Expo + GM Stack!</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+`
+  );
+
+  await fs.writeFile(
+    path.join(appDir, "_layout.tsx"),
+    `import { Stack } from "expo-router";
+
+export default function RootLayout() {
+  return <Stack />;
+}
+`
+  );
 
   spinner.succeed("Expo project reset");
 
