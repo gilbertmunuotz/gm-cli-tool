@@ -126,9 +126,10 @@ module.exports = withUniwindConfig(config, {
     cssEntryFile: './global.css',
     dtsFile: './uniwind-types.d.ts'
 });
-  `
+`
   );
-  spinner.succeed("Metro config created");
+
+  spinner.succeed("Metro configured");
 
   // Step 6: Ensure folder structure
   spinner.start("📁 Creating folders...");
