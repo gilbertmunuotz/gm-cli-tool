@@ -212,7 +212,7 @@ module.exports = withUniwindConfig(config, {
 ✅ Mobile app "${name}" is ready!
 
 Next steps:
-  cd ${name}
-  npx expo start
+cd ${name}
+npx expo start
 `);
 }
