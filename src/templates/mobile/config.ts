@@ -44,18 +44,11 @@ export async function createMobileApp(name: string) {
 
 export default function Index() {
   return (
-    <View style={styles.container}>
+   <View className="flex-1 items-center justify-center">
       <Text>Hello, Expo + GM Stack!</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });
 `
   );
@@ -70,39 +63,63 @@ export default function RootLayout() {
 `
   );
 
-  spinner.succeed("Expo project reset");
+  spinner.succeed("Project structure reset");
 
 
+  // Step 3: Create GM Stack source directories
+  spinner.start("📁 Creating GM Stack folders...");
+
+  const srcDir = path.join(projectPath, "src");
+
+  const dirs = [
+    "components",
+    "config",
+    "constants",
+    "hooks",
+    "lib",
+    "library",
+    "providers",
+    "utils",
+  ];
+
+  for (const dir of dirs) {
+    await fs.ensureDir(path.join(srcDir, dir));
+  }
+
+  spinner.succeed("GM Stack folders ready");
 
 
-  
+  // Step 4: Install styling dependencies
+  spinner.start("🎨 Installing styling dependencies...");
 
-  // Step 3: Install dependencies
-  spinner.start("📦 Installing dependencies...");
   await execa(
     "npm",
-    ["install", "heroui-native", "react-native-svg", "tailwind-variants", "tailwind-merge", "uniwind"],
-    { cwd: projectPath, stdio: "inherit" }
+    ["install", "tailwindcss", "uniwind"],
+    {
+      cwd: projectPath,
+      stdio: "inherit",
+    }
   );
-  spinner.succeed("Dependencies installed");
 
-  // Step 4: Create global.css file and Import it in main component file(rootLayout.tsx)
-  spinner.start("⌛️ Creating global.css file...;")
+  spinner.succeed("Styling dependencies installed");
+
+  // Step 5: Create global.css file
+  spinner.start("🎨 Creating global.css...");
+
   await fs.writeFile(
-    path.join(projectPath, "global.css"),
-    `
-@import 'tailwindcss';
-@import 'uniwind';
-@import 'heroui-native/styles';
-
-@source './node_modules/heroui-native/lib';
-    `
+    path.join(projectPath, "src", "global.css"),
+    `@import "tailwindcss";
+@import "uniwind";
+`
   );
+
+  spinner.succeed("global.css created");
+
+  // step 5.1: Update Expo Router root layout
   await fs.writeFile(
-    path.join(projectPath, "app", "_layout.tsx"),
-    `
-import '../global.css';
-import { Slot } from "expo-router";
+    path.join(projectPath, "src", "app", "_layout.tsx"),
+    `import "../global.css";
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return <Stack />;
@@ -110,34 +127,92 @@ export default function RootLayout() {
 `
   );
 
-  // Step 5: Create metro.config.js file and add the following code
-  spinner.start("⚙️ creating metro.config.js...")
+  // Step 6: Configure Metro for Uniwind
+  spinner.start("⚙️ Configuring Metro for Uniwind...");
+
   await fs.writeFile(
     path.join(projectPath, "metro.config.js"),
-    `
-// Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config');
-const { withUniwindConfig } = require('uniwind/metro');
+    `const { getDefaultConfig } = require("expo/metro-config");
+const { withUniwindConfig } = require("uniwind/metro");
 
-/** @type {import('expo/metro-config').MetroConfig} */
+/** @type {import("expo/metro-config").MetroConfig} */
 const config = getDefaultConfig(__dirname);
 
 module.exports = withUniwindConfig(config, {
-    cssEntryFile: './global.css',
-    dtsFile: './uniwind-types.d.ts'
+  cssEntryFile: "./src/global.css",
+  dtsFile: "./src/uniwind-types.d.ts",
 });
 `
   );
 
   spinner.succeed("Metro configured");
 
-  // Step 6: Ensure folder structure
-  spinner.start("📁 Creating folders...");
-  const dirs = ["components", "lib", "hooks", "constants", "config", "library", "providers", "utils"];
-  for (const dir of dirs) {
-    await fs.ensureDir(path.join(projectPath, dir));
-  }
-  spinner.succeed("Folder structure ready");
+  // Step 7: Install HeroUI Native
+  spinner.start("✨ Installing HeroUI Native...");
 
-  console.log(`\n✅ Mobile app "${name}" is ready!\n`);
+  await execa(
+    "npm",
+    [
+      "install",
+      "heroui-native",
+      "react-native-svg",
+      "tailwind-variants",
+      "tailwind-merge",
+    ],
+    {
+      cwd: projectPath,
+      stdio: "inherit",
+    }
+  );
+
+  spinner.succeed("HeroUI Native installed");
+
+  // Step 8: Configure HeroUI Native styles
+  spinner.start("🎨 Configuring HeroUI Native styles...");
+
+  await fs.writeFile(
+    path.join(projectPath, "src", "global.css"),
+    `@import "tailwindcss";
+  @import "uniwind";
+  @import "heroui-native/styles";
+
+  @source "./node_modules/heroui-native/lib";
+  `
+  );
+
+  spinner.succeed("HeroUI Native styles configured");
+
+  // Step 9: Configure HeroUI Native provider
+  spinner.start("⚡ Configuring HeroUI Native provider...");
+
+  await fs.writeFile(
+    path.join(projectPath, "src", "app", "_layout.tsx"),
+    `import "../global.css";
+
+  import { Stack } from "expo-router";
+  import { GestureHandlerRootView } from "react-native-gesture-handler";
+  import { HeroUINativeProvider } from "heroui-native";
+
+  export default function RootLayout() {
+    return (
+    <GestureHandlerRootView style= {{ flex: 1 }}>
+    <HeroUINativeProvider>
+    <Stack />
+    </HeroUINativeProvider>
+    </GestureHandlerRootView>
+  );
+}
+`
+  );
+
+  spinner.succeed("HeroUI Native provider configured");
+
+  // Step 10: Finish
+  console.log(`
+✅ Mobile app "${name}" is ready!
+
+Next steps:
+  cd ${name}
+  npx expo start
+`);
 }
