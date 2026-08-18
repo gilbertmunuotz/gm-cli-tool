@@ -48,8 +48,7 @@ export default function Index() {
       <Text>Hello, Expo + GM Stack!</Text>
     </View>
   );
-}
-});
+};
 `
   );
 
